@@ -5,22 +5,16 @@
     "main": "dist/index.js",
     "scripts": {
         "lint": "eslint .",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepare": "husky install",
+        "test": "npm run lint && jest",
         "tsc": "tsc",
-        "prepare": "husky install"
+        "types:check": "tsc --project tsconfig.json --noEmit"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avanssion/workplace-notify.git"
     },
-    "keywords": [
-        "workplace",
-        "meta",
-        "messenger",
-        "bot",
-        "message",
-        "thread"
-    ],
+    "keywords": ["workplace", "meta", "messenger", "bot", "message", "thread"],
     "author": "Avanssion",
     "license": "MIT",
     "bugs": {
@@ -31,13 +25,17 @@
         "axios": "^0.24.0"
     },
     "devDependencies": {
+        "@babel/preset-env": "^7.16.8",
+        "@babel/preset-typescript": "^7.16.7",
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
+        "@types/jest": "^27.4.0",
         "@typescript-eslint/eslint-plugin": "^5.10.0",
         "@typescript-eslint/parser": "^5.10.0",
         "eslint": "^8.7.0",
         "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-jest": "^25.7.0",
         "husky": "^7.0.0",
         "jest": "^27.4.7",
         "prettier": "^2.5.1",
