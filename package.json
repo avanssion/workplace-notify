@@ -1,0 +1,44 @@
+{
+    "name": "workplace-notify",
+    "version": "0.0.1",
+    "description": "Send messages into Workplace by Meta.",
+    "main": "dist/index.js",
+    "scripts": {
+        "lint": "eslint .",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "tsc": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/avanssion/workplace-notify.git"
+    },
+    "keywords": [
+        "workplace",
+        "meta",
+        "messenger",
+        "bot",
+        "message",
+        "thread"
+    ],
+    "author": "Avanssion",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/avanssion/workplace-notify/issues"
+    },
+    "homepage": "https://github.com/avanssion/workplace-notify#readme",
+    "dependencies": {
+        "axios": "^0.24.0"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.10.0",
+        "@typescript-eslint/parser": "^5.10.0",
+        "eslint": "^8.7.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "jest": "^27.4.7",
+        "prettier": "^2.5.1",
+        "ts-jest": "^27.1.3",
+        "ts-node": "^10.4.0",
+        "typescript": "^4.5.4"
+    }
+}
