@@ -1,0 +1,54 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run types:check 
+      - run: npm test
+
+  workplace:
+    name: Workplace
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Get conclusion via env.WORKFLOW_CONCLUSION
+        uses: technote-space/workflow-conclusion-action@v2
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+      - name: Set icon if job has succeeded
+        if: env.WORKFLOW_CONCLUSION == 'success'
+        run: |
+          echo "STATUS_ICON=✅" >> $GITHUB_ENV
+      - name: Set icon if job has failed
+        if: env.WORKFLOW_CONCLUSION != 'success'
+        run: |
+          echo "STATUS_ICON=❌" >> $GITHUB_ENV
+      - name: Notify
+        run: |
+          curl --location --request POST "https://graph.facebook.com/v6.0/me/messages?access_token=${{ SECRETS.WORKPLACE_CHAT_CI_CD_ACCESS_TOKEN }}" \
+            --header "Content-Type: application/json" \
+            --data-raw "{ \"recipient\": { \"thread_key\": \"${{ SECRETS.WORKPLACE_CHAT_CI_CD_THREAD_KEY }}\" }, \"message\": { \"text\": \"*${{ env.STATUS_ICON }} $GITHUB_WORKFLOW #$GITHUB_RUN_NUMBER - ${{ github.event.head_commit.message }}*\n\n*Commit* - \`${{ env.GITHUB_SHA_SHORT }}\`\n*Repo* - $GITHUB_REPOSITORY\n*Branch* - ${{ env.GITHUB_REF_SLUG }}\n*Author* - $GITHUB_ACTOR\n\nhttps://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\" } }"
