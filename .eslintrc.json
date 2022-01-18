@@ -1,21 +1,31 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["@typescript-eslint", "jest", "import"],
     "extends": [
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier"
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "./tsconfig.json"
+        "project": "./tsconfig.eslint.json"
     },
-    "settings": {
-        "import/resolver": {
-            "node": {
-                "paths": ["src"],
-                "extensions": [".js", ".ts", ".d.ts"]
-            }
+    "overrides": [
+        {
+            "files": ["test/**/*.ts"],
+            "env": { "jest": true, "node": true }
         }
+    ],
+    "rules": {
+        "import/first": "error",
+        "import/no-absolute-path": "error",
+        "import/no-amd": "error",
+        "import/no-mutable-exports": "error",
+        "import/no-named-default": "error",
+        "import/no-self-import": "error",
+        "import/no-extraneous-dependencies": "error",
+        "import/order": "error",
+        "import/prefer-default-export": "error"
     }
 }
